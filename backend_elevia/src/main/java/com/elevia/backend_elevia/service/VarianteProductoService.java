@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class VarianteProductoService implements IvarianteProductoService {
-    //Se instancia un validador genérico
+    //Se instancia un validador generico
     private final GenericValidator genericValidator;
     private final IvarianteProductoRepository varianteProductoRepository;
 
