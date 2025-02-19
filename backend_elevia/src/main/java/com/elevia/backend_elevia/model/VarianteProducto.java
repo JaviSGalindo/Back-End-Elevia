@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 @Entity
 public class VarianteProducto {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id_variante_productos;

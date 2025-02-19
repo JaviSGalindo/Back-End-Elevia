@@ -10,15 +10,13 @@ import java.util.List;
 
 @Service
 public class VarianteProductoService implements IvarianteProductoService {
-
     //Se instancia un validador genérico
     private final GenericValidator genericValidator;
     private final IvarianteProductoRepository varianteProductoRepository;
 
-
     @Autowired
     public VarianteProductoService(GenericValidator genericValidator, IvarianteProductoRepository varianteProductoRepository) {
-        this.genericValidator = genericValidator; //Se agrega al constructor
+        this.genericValidator = genericValidator;
         this.varianteProductoRepository = varianteProductoRepository;
     }
 
@@ -63,6 +61,5 @@ public class VarianteProductoService implements IvarianteProductoService {
         genericValidator.validateExists(getVarianteProductoById(id), "variante producto");
 
         varianteProductoRepository.deleteById(id);
-
     }
 }

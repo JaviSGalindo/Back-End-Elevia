@@ -11,7 +11,6 @@ import lombok.Data;
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-
     private Long id_producto;
     private String nombre;
     private String descripcion;

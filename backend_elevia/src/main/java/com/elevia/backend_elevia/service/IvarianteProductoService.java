@@ -5,7 +5,6 @@ import com.elevia.backend_elevia.model.VarianteProducto;
 import java.util.List;
 
 public interface IvarianteProductoService {
-
     //Metodo para obtener todas las variantes de productos
     List<VarianteProducto> getAllVarianteProducto();
 

@@ -11,7 +11,7 @@ public interface IproductoService {
     Producto getProductoById(Long id);
 
     //Metodo para crear una  producto
-    Producto createProducto(Producto Producto;
+    Producto createProducto(Producto Producto);
 
     //Metodo para actualizar una  producto
     Producto updateProducto(Long id, Producto Producto);
