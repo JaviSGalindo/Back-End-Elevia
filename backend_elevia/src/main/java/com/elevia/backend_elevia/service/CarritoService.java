@@ -24,23 +24,23 @@ public class CarritoService implements IcarritoService{
 
     @Override
     public Carrito getCarritoById(Long id) {
-        genericValidator.validateId(id, "Carrito");
+        genericValidator.validateId(id, "carrito");
 
         Carrito carrito = carritoRepository.findById(id).orElse(null);
-        genericValidator.validateExists(carrito, "Carrito");
+        genericValidator.validateExists(carrito, "carrito");
         return carrito;
     }
 
     @Override
     public Carrito createCarrito(Carrito carrito) {
-        genericValidator.validateExists(carrito, "Carrito");
+        genericValidator.validateExists(carrito, "carrito");
         return carritoRepository.save(carrito);
     }
 
     @Override
     public Carrito updateCarrito(Long id, Carrito carrito) {
-        genericValidator.validateId(id, "Carrito");
-        genericValidator.validateExists(carrito, "Carrito");
+        genericValidator.validateId(id, "carrito");
+        genericValidator.validateExists(carrito, "carrito");
 
         carrito.setCantidad(carrito.getCantidad());
         return carritoRepository.save(carrito);
@@ -48,8 +48,8 @@ public class CarritoService implements IcarritoService{
 
     @Override
     public void deleteCarrito(Long id) {
-        genericValidator.validateId(id, "Carrito");
-        genericValidator.validateExists(getCarritoById(id), "Carrito");
+        genericValidator.validateId(id, "carrito");
+        genericValidator.validateExists(getCarritoById(id), "carrito");
 
         carritoRepository.deleteById(id);
     }
