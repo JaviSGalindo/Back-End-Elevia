@@ -28,11 +28,11 @@ public class UsuarioService implements IUsuarioService{
 
     @Override
     public Usuario getUsuarioById(Long id) {
-        genericValidator.validateId(id, "Usuario");
+        genericValidator.validateId(id, "usuario");
 
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
 
-        genericValidator.validateExists(usuario, "variante producto");
+        genericValidator.validateExists(usuario, "usuario");
 
         return usuario;
     }
@@ -46,8 +46,8 @@ public class UsuarioService implements IUsuarioService{
 
     @Override
     public Usuario updateUsuario(Long id, Usuario usuario) {
-        genericValidator.validateId(id, "Usuario");
-        genericValidator.validateExists(usuario, "Usuario");
+        genericValidator.validateId(id, "usuario");
+        genericValidator.validateExists(usuario, "usuario");
 
         usuario.setNombre(usuario.getNombre());
         usuario.setApellido(usuario.getApellido());
@@ -62,8 +62,8 @@ public class UsuarioService implements IUsuarioService{
 
     @Override
     public void deleteUsuario(Long id) {
-        genericValidator.validateId(id, "Usuario");
-        genericValidator.validateExists(getUsuarioById(id), "Usuario");
+        genericValidator.validateId(id, "usuario");
+        genericValidator.validateExists(getUsuarioById(id), "usuario");
 
         usuarioRepository.deleteById(id);
 
