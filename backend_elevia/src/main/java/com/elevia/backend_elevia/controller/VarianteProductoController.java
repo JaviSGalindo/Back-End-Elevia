@@ -32,9 +32,8 @@ public class VarianteProductoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<VarianteProducto> getVarianteProductoById(@PathVariable Long id) {
-        VarianteProducto varianteProducto = varianteProductoService.getVarianteProductoById(id);
 
-        return varianteProducto != null ? ResponseEntity.ok(varianteProducto) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(varianteProductoService.getVarianteProductoById(id));
     }
 
     @PostMapping
