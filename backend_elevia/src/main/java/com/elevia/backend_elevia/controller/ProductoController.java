@@ -32,9 +32,8 @@ public class ProductoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Producto> getProductoById(@PathVariable Long id){
-        Producto producto = productoService.getProductoById(id);
+        return ResponseEntity.ok(productoService.getProductoById(id));
 
-        return producto != null ? ResponseEntity.ok(producto) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
