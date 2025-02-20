@@ -33,10 +33,20 @@ public class CarritoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Carrito> updateCarrito(@PathVariable Long id, @RequestBody Carrito carrito){
-        Carrito carritoForUpdate = carritoservice.getCarritoById(id);
-        if()
-        return carritoForUpdate != null ? ResponseEntity.ok()(carritoUpdate): ResponseEntity.notFound().build();
+    public ResponseEntity<Carrito> updateCarrito(@PathVariable Long id, @RequestBody Carrito carrito) {
+        Carrito carritoBeforeUpdate = carritoservice.getCarritoById(id);
+        Carrito carritoUpdate = carritoservice.updateCarrito(id, carrito);
+
+        if (carritoBeforeUpdate.equals(carritoUpdate)) {
+            return ResponseEntity.noContent().build(); // Si no hubo cambios, devolvemos HTTP 204
+        }
+        return ResponseEntity.ok(carritoUpdate); // Si hubo cambios, devolvemos HTTP 200 con el recurso actualizado
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletecarrito(@PathVariable Long id) {
+        carritoservice.deleteCarrito(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
