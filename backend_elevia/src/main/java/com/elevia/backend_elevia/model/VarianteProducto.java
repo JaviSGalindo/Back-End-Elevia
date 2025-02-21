@@ -10,7 +10,7 @@ import lombok.Data;
 @Entity
 public class VarianteProducto {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_variante_productos;
     private Long producto_id;
     private String talla;

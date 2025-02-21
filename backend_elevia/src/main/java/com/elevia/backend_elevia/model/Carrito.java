@@ -10,7 +10,7 @@ import lombok.Data;
 @Entity
 public class Carrito {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_carrito;
     private Long usuario_id;
     private Long variante_producto_id;
