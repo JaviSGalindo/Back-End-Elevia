@@ -23,33 +23,32 @@ public class CarritoService implements IcarritoService{
 
     @Override
     public Carrito getCarritoById(Long id) {
-        genericValidator.validateId(id, "carrito");
+        return genericValidator.validateEntityExists(id, "carrito", carritoRepository);
 
-        Carrito carrito = carritoRepository.findById(id).orElse(null);
-        genericValidator.validateExists(carrito, "carrito");
-        return carrito;
     }
 
     @Override
     public Carrito createCarrito(Carrito carrito) {
-        genericValidator.validateExists(carrito, "carrito");
+        if (carrito.getCantidad() == null){
+            throw  new IllegalArgumentException("La cantidad es necesaria");
+        }
         return carritoRepository.save(carrito);
     }
 
     @Override
     public Carrito updateCarrito(Long id, Carrito carrito) {
-        genericValidator.validateId(id, "carrito");
-        genericValidator.validateExists(carrito, "carrito");
+        genericValidator.validateEntityExists(id, "carrito", carritoRepository);
 
-        carrito.setCantidad(carrito.getCantidad());
+        if (carrito.getCantidad() != null){
+            carrito.setCantidad(carrito.getCantidad());
+        }
         return carritoRepository.save(carrito);
     }
 
     @Override
     public void deleteCarrito(Long id) {
-        genericValidator.validateId(id, "carrito");
-        genericValidator.validateExists(getCarritoById(id), "carrito");
-
+        genericValidator.validateEntityExists(id, "carrito", carritoRepository);
         carritoRepository.deleteById(id);
+
     }
 }
