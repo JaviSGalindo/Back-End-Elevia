@@ -45,6 +45,4 @@ public class VarianteProductoController {
         varianteProductoService.deleteVarianteProducto(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }
