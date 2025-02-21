@@ -24,33 +24,22 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List<Usuario>> getAllUsuarios() {
-        List<Usuario> usuarioList = usuarioService.getAllUsuario();
-        if (usuarioList.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(usuarioList);
+        return ResponseEntity.ok(usuarioService.getAllUsuario());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
-        Usuario usuario = usuarioService.getUsuarioById(id);
-        return usuario != null ? ResponseEntity.ok(usuario) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(usuarioService.getUsuarioById(id));
     }
 
     @PostMapping
     public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
-        Usuario usuarioCreado = usuarioService.createUsuario(usuario);
-        return ResponseEntity.ok(usuarioCreado);
+        return ResponseEntity.ok(usuarioService.createUsuario(usuario));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        Usuario usuarioBeforeUpdate = usuarioService.getUsuarioById(id);
-        Usuario usuarioUpdate= usuarioService.updateUsuario(id, usuario);
-        if (usuarioBeforeUpdate.equals(usuarioUpdate)){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(usuarioUpdate);
+        return ResponseEntity.ok(usuarioService.updateUsuario(id, usuario));
     }
 
     @DeleteMapping("/{id}")

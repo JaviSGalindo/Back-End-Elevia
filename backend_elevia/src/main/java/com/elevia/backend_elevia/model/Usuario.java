@@ -19,16 +19,13 @@ public class Usuario {
     private String contrasena;
 
     public Usuario(Long id, String nombre, String apellido, String telefono, String email, String direccion, String contrasena) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.telefono = telefono;
-        this.email = email;
-        this.direccion = direccion;
-        this.contrasena = contrasena;
+
     }
 
     public Usuario() {
+    }
+
+    public Object getContraseña() {
     }
 }
 
