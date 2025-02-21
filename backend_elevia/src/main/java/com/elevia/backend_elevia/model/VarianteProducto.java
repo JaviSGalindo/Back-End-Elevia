@@ -15,9 +15,9 @@ public class VarianteProducto {
     private Long producto_id;
     private String talla;
     private String color;
-    private int stock_variante;
+    private Integer stock_variante;
 
-    public VarianteProducto(Long id_variante_productos, Long producto_id, String talla, String color, int stock_variante) {
+    public VarianteProducto(Long id_variante_productos, Long producto_id, String talla, String color, Integer stock_variante) {
         this.id_variante_productos = id_variante_productos;
         this.producto_id = producto_id;
         this.talla = talla;
