@@ -22,37 +22,22 @@ public class VarianteProductoController {
 
     @GetMapping
     public ResponseEntity<List<VarianteProducto>> getAllVarianteProducto() {
-        List<VarianteProducto> varianteProductoList = varianteProductoService.getAllVarianteProducto();
-        if (varianteProductoList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(varianteProductoList);
+        return ResponseEntity.ok(varianteProductoService.getAllVarianteProducto());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<VarianteProducto> getVarianteProductoById(@PathVariable Long id) {
-
         return ResponseEntity.ok(varianteProductoService.getVarianteProductoById(id));
     }
 
     @PostMapping
     public ResponseEntity<VarianteProducto> createVarianteProducto(@RequestBody VarianteProducto varianteProducto) {
-        VarianteProducto varianteProductoCreated = varianteProductoService.createVarianteProducto(varianteProducto);
-        return ResponseEntity.ok(varianteProductoCreated);
+        return ResponseEntity.ok(varianteProductoService.createVarianteProducto(varianteProducto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<VarianteProducto> updateVarianteProducto(@PathVariable Long id, @RequestBody VarianteProducto varianteProducto) {
-        VarianteProducto varianteProductoBeforeUpdate = varianteProductoService.getVarianteProductoById(id);
-
-        VarianteProducto varianteProductoUpdated = varianteProductoService.updateVarianteProducto(id, varianteProducto);
-
-        if (varianteProductoBeforeUpdate.equals(varianteProductoUpdated)) {
-            return ResponseEntity.noContent().build(); // Si no hubo cambios, devolvemos HTTP 204
-        }
-
-        return ResponseEntity.ok(varianteProductoUpdated); // Si hubo cambios, devolvemos HTTP 200 con el recurso actualizado
+        return ResponseEntity.ok(varianteProductoService.updateVarianteProducto(id, varianteProducto));
     }
 
     @DeleteMapping("/{id}")
