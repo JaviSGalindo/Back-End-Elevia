@@ -1,9 +1,6 @@
 package com.elevia.backend_elevia.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -14,7 +11,7 @@ public class Carrito {
     private Long id_carrito;
     private Long usuario_id;
     private Long variante_producto_id;
-    private int cantidad;
+    private Integer cantidad;
 
     public Carrito() {
     }

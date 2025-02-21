@@ -13,34 +13,27 @@ import java.util.List;
 @RequestMapping("/carritos")
 public class CarritoController {
 
-    @Autowired
+
     private final CarritoService carritoservice;
 
+    @Autowired
     public CarritoController(CarritoService carritoservice) {
         this.carritoservice = carritoservice;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Carrito> getcarritoById(@PathVariable Long id){
-        Carrito carrito = carritoservice.getCarritoById(id);
-        return carrito != null ? ResponseEntity.ok(carrito):ResponseEntity.notFound().build();
+        return  ResponseEntity.ok(carritoservice.getCarritoById(id));
     }
 
     @PostMapping
     public ResponseEntity<Carrito> crearCarrito(@RequestBody Carrito carrito){
-        Carrito carritocreated = carritoservice.createCarrito(carrito);
-        return carritocreated != null ? ResponseEntity.ok(carritocreated): ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(carritoservice.createCarrito(carrito));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Carrito> updateCarrito(@PathVariable Long id, @RequestBody Carrito carrito) {
-        Carrito carritoBeforeUpdate = carritoservice.getCarritoById(id);
-        Carrito carritoUpdate = carritoservice.updateCarrito(id, carrito);
-
-        if (carritoBeforeUpdate.equals(carritoUpdate)) {
-            return ResponseEntity.noContent().build(); // Si no hubo cambios, devolvemos HTTP 204
-        }
-        return ResponseEntity.ok(carritoUpdate); // Si hubo cambios, devolvemos HTTP 200 con el recurso actualizado
+        return ResponseEntity.ok(carritoservice.updateCarrito(id,carrito)); //
     }
 
     @DeleteMapping("/{id}")
