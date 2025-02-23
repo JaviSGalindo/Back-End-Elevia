@@ -22,36 +22,22 @@ public class ProductoController {
 
     @GetMapping
     public ResponseEntity<List<Producto>> getAllProducto(){
-        List<Producto> productoList = productoService.getAllProducto();
-        if(productoList.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(productoList);
+        return ResponseEntity.ok(productoService.getAllProducto());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Producto> getProductoById(@PathVariable Long id){
         return ResponseEntity.ok(productoService.getProductoById(id));
-
     }
 
     @PostMapping
     public ResponseEntity<Producto> createProducto(@RequestBody Producto producto){
-        Producto productoCreated = productoService.createProducto(producto);
-        return ResponseEntity.ok(productoCreated);
+        return ResponseEntity.ok(productoService.createProducto(producto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Producto> updateProducto(@PathVariable Long id, @RequestBody Producto producto){
-        Producto productoBeforeUpdate = productoService.getProductoById(id);
-
-        Producto productoUpdated = productoService.updateProducto(id, producto);
-        if(productoBeforeUpdate.equals(productoUpdated)) {
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(productoUpdated);
+        return ResponseEntity.ok(productoService.updateProducto(id, producto));
     }
 
     @DeleteMapping("/{id}")
@@ -59,5 +45,4 @@ public class ProductoController {
         productoService.deleteProducto(id);
         return ResponseEntity.noContent().build();
     }
-
 }

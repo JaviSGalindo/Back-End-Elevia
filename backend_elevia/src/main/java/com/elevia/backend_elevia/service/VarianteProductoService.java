@@ -39,7 +39,7 @@ public class VarianteProductoService implements IvarianteProductoService {
     @Override
     public VarianteProducto createVarianteProducto(VarianteProducto varianteProducto) {
         if (varianteProducto.getStock_variante() == null) {
-            throw new IllegalArgumentException("El stock de la variante de producto es obligatorio");
+            throw new IllegalArgumentException("El stock de la variante de producto es necesario");
         }
         return varianteProductoRepository.save(varianteProducto);
     }

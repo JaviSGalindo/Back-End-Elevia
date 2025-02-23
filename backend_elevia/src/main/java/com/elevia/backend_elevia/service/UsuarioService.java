@@ -3,6 +3,7 @@ package com.elevia.backend_elevia.service;
 import com.elevia.backend_elevia.model.Usuario;
 import com.elevia.backend_elevia.repository.IUsuarioRepository;
 import com.elevia.backend_elevia.validator.GenericValidator;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,51 +24,56 @@ public class UsuarioService implements IUsuarioService{
 
     @Override
     public List<Usuario> getAllUsuario() {
-        return usuarioRepository.findAll();
+        List<Usuario> usuarios= usuarioRepository.findAll();
+        if (usuarios.isEmpty()){
+            throw new EntityNotFoundException("No se encontraron usuarios");
+        }
+        return usuarios;
     }
 
     @Override
     public Usuario getUsuarioById(Long id) {
-        genericValidator.validateId(id, "usuario");
-
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-
-        genericValidator.validateExists(usuario, "usuario");
-
-        return usuario;
+        return  genericValidator.validateEntityExists(id,"usuario", usuarioRepository);
     }
 
     @Override
     public Usuario createUsuario(Usuario usuario) {
-        genericValidator.validateExists(usuario, "usuario");
+        if (usuario.getNombre() == null || usuario.getApellido() == null ||
+                usuario.getContrasena() == null || usuario.getDireccion() == null ||
+                usuario.getTelefono() == null || usuario.getEmail() == null) {
+            throw new IllegalArgumentException("Todos los campos del usuario son obligatorios");
+        }
 
         return usuarioRepository.save(usuario);
     }
 
     @Override
     public Usuario updateUsuario(Long id, Usuario usuario) {
-        genericValidator.validateId(id, "usuario");
-        genericValidator.validateExists(usuario, "usuario");
+        Usuario existingUsuario = genericValidator.validateEntityExists(id, "usuario", usuarioRepository);
 
-        usuario.setNombre(usuario.getNombre());
-        usuario.setApellido(usuario.getApellido());
-        usuario.setContrasena(usuario.getContrasena());
-        usuario.setDireccion(usuario.getDireccion());
-        usuario.setTelefono(usuario.getTelefono());
-        usuario.setEmail(usuario.getEmail());
+        if (usuario.getNombre() != null) {
+            existingUsuario.setNombre(usuario.getNombre());
+        }
+        if (usuario.getApellido() != null) {
+            existingUsuario.setApellido(usuario.getApellido());
+        }
+        if (usuario.getDireccion() != null) {
+            existingUsuario.setDireccion(usuario.getDireccion());
+        }
+        if (usuario.getTelefono() != null) {
+            existingUsuario.setTelefono(usuario.getTelefono());
+        }
+        if (usuario.getEmail() != null) {
+            existingUsuario.setEmail(usuario.getEmail());
+        }
 
-
-        return usuarioRepository.save(usuario);
+        return usuarioRepository.save(existingUsuario);
     }
 
     @Override
     public void deleteUsuario(Long id) {
-        genericValidator.validateId(id, "usuario");
-        genericValidator.validateExists(getUsuarioById(id), "usuario");
-
+        genericValidator.validateEntityExists(id, "Usuario", usuarioRepository);
         usuarioRepository.deleteById(id);
 
     }
-
-
 }

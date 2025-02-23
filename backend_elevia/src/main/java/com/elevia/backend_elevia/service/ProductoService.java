@@ -2,7 +2,9 @@ package com.elevia.backend_elevia.service;
 
 import com.elevia.backend_elevia.model.Producto;
 import com.elevia.backend_elevia.repository.IproductoRepository;
+import com.elevia.backend_elevia.repository.IvarianteProductoRepository;
 import com.elevia.backend_elevia.validator.GenericValidator;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,46 +24,62 @@ public class ProductoService implements IproductoService {
 
     @Override
     public List<Producto> getAllProducto() {
-        return productoRepository.findAll();
+        List<Producto> productos = productoRepository.findAll();
+        if (productos.isEmpty()) {
+            throw new EntityNotFoundException("No se encontraron productos");
+        }
+        return productos;
     }
 
     @Override
     public Producto getProductoById(Long id) {
-        genericValidator.validateId(id, "producto");
-
-        Producto producto = productoRepository.findById(id).orElse(null);
-
-        genericValidator.validateExists(producto, "producto");
-
-        return  producto;
+        return genericValidator.validateEntityExists(id, "producto", productoRepository);
     }
 
     @Override
     public Producto createProducto(Producto producto) {
-        genericValidator.validateExists(producto, "producto");
-
+        if (producto.getNombre() == null){
+            throw  new IllegalArgumentException("El nombre de producto es necesario");
+        }
+        if (producto.getDescripcion() == null){
+            throw  new IllegalArgumentException("La descricion de producto es necesaria");
+        }
+        if (producto.getCategoria() == null){
+            throw  new IllegalArgumentException("La categoria de producto es necesaria");
+        }
+        if (producto.getImagen_producto() == null){
+            throw  new IllegalArgumentException("La imagen de producto es necesaria");
+        }
         return productoRepository.save(producto);
     }
 
     @Override
     public Producto updateProducto(Long id, Producto producto) {
-        genericValidator.validateId(id, "producto");
-        genericValidator.validateExists(producto, "producto");
+        genericValidator.validateEntityExists(id, "producto", productoRepository);
 
-        producto.setNombre(producto.getNombre());
-        producto.setDescripcion(producto.getDescripcion());
-        producto.setCategoria(producto.getCategoria());
-        producto.setImagen_producto(producto.getImagen_producto());
-        producto.setStock(producto.getStock());
-        producto.setPrecio(producto.getPrecio());
+        if (producto.getNombre() != null){
+            producto.setNombre(producto.getNombre());
+        }
+        if (producto.getDescripcion() != null){
+            producto.setDescripcion(producto.getDescripcion());
+        }
+        if (producto.getCategoria() != null){
+            producto.setCategoria(producto.getCategoria());
+        }
+        if (producto.getImagen_producto() != null){
+            producto.setImagen_producto(producto.getImagen_producto());
+        }
+        if (producto.getStock() != null){
+            producto.setStock(producto.getStock());
+        }
+        if (producto.getPrecio() != null) producto.setPrecio(producto.getPrecio());
 
         return productoRepository.save(producto);
     }
 
     @Override
     public void deleteProducto(Long id) {
-        genericValidator.validateId(id, "producto");
-        genericValidator.validateExists(getProductoById(id), "producto");
+        genericValidator.validateEntityExists(id, "producto", productoRepository);
 
         productoRepository.deleteById(id);
     }
