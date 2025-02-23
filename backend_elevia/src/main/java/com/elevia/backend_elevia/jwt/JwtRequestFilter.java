@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -26,6 +28,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+        String requestPath = request.getRequestURI();
+
+        // Rutas públicas que deben ser excluidas del filtro
+        List<String> excludedPaths = Arrays.asList("/usuarios/login", "/usuarios/", "usuarios/login"
+        );
+
+        if (excludedPaths.contains(requestPath)) {
+            chain.doFilter(request, response); // Saltar filtro para estas rutas
+            return;
+        }
+
         final String authorizationHeader = request.getHeader("Authorization");
 
         String email = null;
