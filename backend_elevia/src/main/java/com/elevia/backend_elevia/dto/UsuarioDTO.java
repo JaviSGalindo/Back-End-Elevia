@@ -6,6 +6,7 @@ import lombok.Data;
 public class UsuarioDTO {
     public String email;
     public String contrasena;
+    private String token;
 
     public UsuarioDTO(String email, String contrasena) {
         this.email = email;

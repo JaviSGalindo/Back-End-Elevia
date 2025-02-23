@@ -1,9 +1,15 @@
 package com.elevia.backend_elevia.controller;
 
+import com.elevia.backend_elevia.dto.UsuarioDTO;
+import com.elevia.backend_elevia.jwt.JwtUtil;
+import com.elevia.backend_elevia.mapper.UsuarioMapper;
 import com.elevia.backend_elevia.service.IUsuarioService;
 import com.elevia.backend_elevia.model.Usuario;
 import com.elevia.backend_elevia.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +21,14 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    private final IUsuarioService usuarioService;
+    @Autowired
+    private  IUsuarioService usuarioService;
 
     @Autowired
-    public UsuarioController(IUsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @GetMapping
     public ResponseEntity<List<Usuario>> getAllUsuarios() {
@@ -45,5 +53,24 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
         usuarioService.deleteUsuario(id);
-        return ResponseEntity.noContent().build();   }
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioDTO> login(@RequestBody UsuarioDTO usuarioDTO) {
+        Usuario usuario = UsuarioMapper.toEntity(usuarioDTO);
+        UserDetails userDetails = usuarioService.LoadByEmail(usuario.getEmail());
+
+        if (userDetails != null && passwordEncoder.matches(usuario.getContrasena(), userDetails.getPassword())) {
+            String token = jwtUtil.generateToken(userDetails.getUsername());
+
+            // Incluir el token en el DTO de respuesta
+            usuarioDTO.setToken(token);
+            usuarioDTO.setContrasena(null); // Por seguridad, eliminamos la contraseña en la respuesta
+
+            return ResponseEntity.ok(usuarioDTO);
+        }
+        return ResponseEntity.status(401).build();
+    }
+
 }

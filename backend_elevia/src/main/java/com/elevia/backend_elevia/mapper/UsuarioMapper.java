@@ -26,5 +26,4 @@ public class UsuarioMapper {
                 usuarioDTO.getContrasena()
         );
     }
-
 }

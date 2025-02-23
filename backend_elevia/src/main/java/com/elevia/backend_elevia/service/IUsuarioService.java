@@ -1,6 +1,7 @@
 package com.elevia.backend_elevia.service;
 
 import com.elevia.backend_elevia.model.Usuario;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
@@ -19,4 +20,9 @@ public interface IUsuarioService {
 
     //Metodo para eliminar un usuario
     void deleteUsuario(Long id);
+
+    //Metodo para encontrar usuario por correo
+    User LoadByEmail(String email);
+
+
 }
