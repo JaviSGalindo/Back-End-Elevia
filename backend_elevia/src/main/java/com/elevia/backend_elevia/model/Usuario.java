@@ -30,5 +30,10 @@ public class Usuario {
 
     public Usuario() {
     }
+
+    public Usuario(String email, String contrasena) {
+        this.email = email;
+        this.contrasena = contrasena;
+    }
 }
 

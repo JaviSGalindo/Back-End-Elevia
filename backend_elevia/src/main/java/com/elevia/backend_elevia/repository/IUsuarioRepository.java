@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface IUsuarioRepository  extends JpaRepository<Usuario, Long> {
 
+    Usuario findByEmail(String email);
+
 }
