@@ -31,11 +31,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String requestPath = request.getRequestURI();
 
         // Rutas públicas que deben ser excluidas del filtro
-        List<String> excludedPaths = Arrays.asList("/usuarios/login", "/usuarios/", "usuarios/login"
-        );
-
-        if (excludedPaths.contains(requestPath)) {
-            chain.doFilter(request, response); // Saltar filtro para estas rutas
+        List<String> excludedPaths = Arrays.asList("/usuarios/login", "/usuarios", "/usuarios/");
+        if (excludedPaths.contains(request.getRequestURI())) {
+            chain.doFilter(request, response);
             return;
         }
 
