@@ -7,6 +7,7 @@ import com.elevia.backend_elevia.service.IUsuarioService;
 import com.elevia.backend_elevia.model.Usuario;
 import com.elevia.backend_elevia.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,20 +58,26 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UsuarioDTO> login(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<?> login(@RequestBody UsuarioDTO usuarioDTO) {
         Usuario usuario = UsuarioMapper.toEntity(usuarioDTO);
         UserDetails userDetails = usuarioService.LoadByEmail(usuario.getEmail());
 
-        if (userDetails != null && passwordEncoder.matches(usuario.getContrasena(), userDetails.getPassword())) {
-            String token = jwtUtil.generateToken(userDetails.getUsername());
-
-            // Incluir el token en el DTO de respuesta
-            usuarioDTO.setToken(token);
-            usuarioDTO.setContrasena(null); // Por seguridad, eliminamos la contraseña en la respuesta
-
-            return ResponseEntity.ok(usuarioDTO);
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"message\": \"El email no está registrado.\"}");
         }
-        return ResponseEntity.status(401).build();
+
+        if (!passwordEncoder.matches(usuario.getContrasena(), userDetails.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"La contraseña es incorrecta.\"}");
+        }
+
+        String token = jwtUtil.generateToken(userDetails.getUsername());
+
+        // Crear una respuesta sin incluir la contraseña
+
+        usuarioDTO.setEmail(usuario.getEmail());
+        usuarioDTO.setToken(token);
+
+        return ResponseEntity.ok(usuarioDTO);
     }
 
 }
