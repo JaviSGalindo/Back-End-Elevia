@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UsuarioService implements IUsuarioService{
@@ -45,11 +46,15 @@ public class UsuarioService implements IUsuarioService{
 
     @Override
     public Usuario createUsuario(Usuario usuario) {
-        Usuario usuarioExistente = usuarioRepository.findByEmail(get);
         if (usuario.getNombre() == null || usuario.getApellido() == null ||
                 usuario.getContrasena() == null ||
                 usuario.getTelefono() == null || usuario.getEmail() == null) {
             throw new IllegalArgumentException("Todos los campos del usuario son obligatorios");
+        }
+
+        Usuario usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+        if (usuarioExistente != null) {
+            throw new IllegalArgumentException("El email ya está registrado");
         }
 
         // Encriptar la contraseña antes de guardar

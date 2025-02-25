@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    private  IUsuarioService usuarioService;
+    private IUsuarioService usuarioService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -42,8 +43,13 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.createUsuario(usuario));
+    public ResponseEntity<?> createUsuario(@RequestBody Usuario usuario) {
+        try {
+            Usuario nuevoUsuario = usuarioService.createUsuario(usuario);
+            return ResponseEntity.ok(nuevoUsuario);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("{\"message\": \"El email ya está registrado\"}");
+        }
     }
 
     @PutMapping("/{id}")
