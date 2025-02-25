@@ -45,6 +45,7 @@ public class UsuarioService implements IUsuarioService{
 
     @Override
     public Usuario createUsuario(Usuario usuario) {
+        Usuario usuarioExistente = usuarioRepository.findByEmail(get);
         if (usuario.getNombre() == null || usuario.getApellido() == null ||
                 usuario.getContrasena() == null ||
                 usuario.getTelefono() == null || usuario.getEmail() == null) {
