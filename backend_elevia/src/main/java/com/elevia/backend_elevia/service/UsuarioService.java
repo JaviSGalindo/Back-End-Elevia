@@ -46,7 +46,7 @@ public class UsuarioService implements IUsuarioService{
     @Override
     public Usuario createUsuario(Usuario usuario) {
         if (usuario.getNombre() == null || usuario.getApellido() == null ||
-                usuario.getContrasena() == null || usuario.getDireccion() == null ||
+                usuario.getContrasena() == null ||
                 usuario.getTelefono() == null || usuario.getEmail() == null) {
             throw new IllegalArgumentException("Todos los campos del usuario son obligatorios");
         }
@@ -66,9 +66,6 @@ public class UsuarioService implements IUsuarioService{
         }
         if (usuario.getApellido() != null) {
             existingUsuario.setApellido(usuario.getApellido());
-        }
-        if (usuario.getDireccion() != null) {
-            existingUsuario.setDireccion(usuario.getDireccion());
         }
         if (usuario.getTelefono() != null) {
             existingUsuario.setTelefono(usuario.getTelefono());
@@ -91,7 +88,7 @@ public class UsuarioService implements IUsuarioService{
     public User LoadByEmail(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email);
         if (usuario == null) {
-            throw new EntityNotFoundException("Usuario no encontrado");
+            throw new EntityNotFoundException("Email no encontrado");
         }
         return new org.springframework.security.core.userdetails.User(usuario.getEmail(), usuario.getContrasena(), new ArrayList<>());
     }
